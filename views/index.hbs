@@ -1,0 +1,67 @@
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Jumbotron Header -->
+    <header class="jumbotron my-4">
+        <h4 class="display-4">Hello Word!</h4>
+        <a href="#" id='getnews' class="btn btn-primary btn-lg">Get News</a>
+    </header>
+
+    <!-- Page Features -->
+    <div class="row text-center">
+        <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card" style="height: 350px">
+                <!--<img class="card-img-top" src="http://placehold.it/200x100" alt="">-->
+                <div class="card-body">
+                    <h4 class="card-title">News</h4>
+                    {{#if data}}
+                        <p class="card-text">{{data.news.title}}</p>
+                    {{else}}
+                        <p class="card-text">loading...</p>
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card" style="height: 350px">
+                <!--<img class="card-img-top" src="http://placehold.it/500x325" alt="">-->
+                <div class="card-body">
+                    <h4 class="card-title">Phrases</h4>
+                    {{#if data}}
+                        <p class="card-text">{{data.phrases}}</p>
+                    {{else}}
+                        <p class="card-text">loading...</p>
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-1 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; News 2019</p>
+    </div>
+    <!-- /.container -->
+</footer>
