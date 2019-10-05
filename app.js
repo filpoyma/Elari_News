@@ -2,23 +2,23 @@ const createError = require('http-errors');
 const express = require('express');
 const morgan = require("morgan");
 const path = require('path');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const redis   = require("redis");
-const RedisStore = require('connect-redis')(session);
-const client  = redis.createClient();
-const {cookiesCleaner} = require('./middleware/auth');
+//const cookieParser = require('cookie-parser');
+//const session = require('express-session');
+//const redis   = require("redis");
+//const RedisStore = require('connect-redis')(session);
+//const client  = redis.createClient();
+//const {cookiesCleaner} = require('./middleware/auth');
 const logger = require('morgan');
-const methodOverride = require('method-override')
+//const methodOverride = require('method-override')
 
 const indexRouter = require('./routes/index');
 
 const app = express();
 
 // Mongoose connect
-const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/TVChanel', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set('useCreateIndex', true);
+// const mongoose = require("mongoose");
+// mongoose.connect('mongodb://localhost:27017/TVChanel', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.set('useCreateIndex', true);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -31,24 +31,24 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(cookieParser());
-app.use(session({
-    store: new RedisStore({
-        client,
-        host: 'localhost',
-        port: 6379,
-        ttl :  2600
-    }),
-    key: 'user_sid',
-    secret: 'anything here',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        expires: 6000000
-    }
-}));
+// app.use(cookieParser());
+// app.use(session({
+//     store: new RedisStore({
+//         client,
+//         host: 'localhost',
+//         port: 6379,
+//         ttl :  2600
+//     }),
+//     key: 'user_sid',
+//     secret: 'anything here',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         expires: 6000000
+//     }
+// }));
 
-app.use(cookiesCleaner);
+//app.use(cookiesCleaner);
 
 app.use('/', indexRouter);
 
