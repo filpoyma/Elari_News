@@ -1,5 +1,5 @@
 'use strict';
-
+var fs = require('file-system');
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
@@ -17,15 +17,10 @@ router.get('/', async function (req, res) {
     .then((news) => newsResolve(news));
   fetch(`${API_PREFIX}/json/2/3000`)
     .then(response => response.json())
-    .then((phrases) => {
-      phResolve(phrases)
-    });
+    .then((phrases) => phResolve(phrases));
 
   const timerInterval = setInterval(() => checkData(), REQUEST_PERIOD);
-  const timerTimeout = setTimeout(() => {
-    notRespond();
-  }, WAITING_TIME);
-
+  const timerTimeout = setTimeout(() => { notRespond() }, WAITING_TIME);
 
   function newsResolve(thisnews) {
     news = thisnews;
@@ -39,7 +34,10 @@ router.get('/', async function (req, res) {
     if (news !== null) {
       clearInterval(timerInterval);
       clearTimeout(timerTimeout);
-      if (phrases === null) phrases = ['Не дождались фраз'];
+      if (phrases === null) {
+        phrases = ['Не дождались фраз'];
+        addError(phrases.join(','));
+      }
       sendNews(news, phrases);
     }
   }
@@ -48,6 +46,8 @@ router.get('/', async function (req, res) {
     clearInterval(timerInterval);
     news = [{title: 'Не дождались новостей'}];
     phrases = ['Не дождались фраз'];
+    const dataErr = `${news[0].title} / ${phrases[0]}`;
+    addError(dataErr);
     sendNews(news, phrases);
   }
 
@@ -56,9 +56,17 @@ router.get('/', async function (req, res) {
       news: dataNws[Math.floor(Math.random() * dataNws.length)],
       phrases: dataPhs[Math.floor(Math.random() * dataPhs.length)]
     };
-    console.log('send News Data', data);
+    //console.log('send News Data', data);
     res.render('index.hbs', {data});
   }
 });
+
+function addError(data){
+  data = `${new Date()} ${data} \n`;
+  fs.appendFile('./log/resrrors.log', data, function (err) {
+    if (err) throw err;
+    //console.log('resp err');
+  });
+}
 
 module.exports = router;
