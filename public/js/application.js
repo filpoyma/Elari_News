@@ -11,6 +11,6 @@ getNewsButton.addEventListener('click', async event => {
                             </div>
                         </div>`
   });
-  window.location = '/'
-
+  //window.location = `/${Math.random().toString(36).substring(7)}`
+  window.location = '/';
 })

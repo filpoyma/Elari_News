@@ -1,4 +1,4 @@
-## Awesome news
+## Awesome Elari news
 
 type
 
