@@ -74,7 +74,7 @@ router.get('/:id', async function (req, res) {
 function addError(err) {
   const data = `${new Date()} ${err} \n`;
   if (!fs.existsSync('./log')) {
-    fs.mkdir('/log')
+    fs.mkdir('./log')
   }
   fs.appendFile('./log/resrrors.log', data, function (err) {
     if (err) throw err;
