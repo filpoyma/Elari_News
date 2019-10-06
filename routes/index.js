@@ -24,7 +24,7 @@ router.get('/:id', async function (req, res) {
     .then(response => response.json())
     .then((phrases) => phResolve(phrases));
 
-  const timerInterval = setInterval(() => checkData(), REQUEST_PERIOD);
+  const timerInterval = setInterval(() => checkNews(), REQUEST_PERIOD);
   const timerTimeout = setTimeout(() => {
     notRespond()
   }, WAITING_TIME);
@@ -37,15 +37,19 @@ router.get('/:id', async function (req, res) {
     phrases = thisph;
   }
 
-  function checkData() {
+  function checkNews() {
     if (news !== null) {
       clearInterval(timerInterval);
       clearTimeout(timerTimeout);
-      if (phrases === null) {
-        phrases = ['Не дождались фраз'];
-        addError(phrases[0]);
-      }
+      checkPhrases(phrases);
       sendNews(news, phrases);
+    }
+  }
+
+  function checkPhrases(dataPh) {
+    if (dataPh === null) {
+      phrases = ['Не дождались фраз'];
+      addError(phrases[0]);
     }
   }
 
@@ -53,10 +57,7 @@ router.get('/:id', async function (req, res) {
     clearInterval(timerInterval);
     news = [{title: 'Не дождались новостей'}];
     addError(news[0].title);
-    if (phrases === null) {
-      phrases = ['Не дождались фраз'];
-      addError(phrases[0]);
-    }
+    checkPhrases(phrases);
     sendNews(news, phrases);
   }
 
