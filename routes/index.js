@@ -1,5 +1,5 @@
 'use strict';
-var fs = require('file-system');
+const fs = require('file-system');
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
@@ -24,11 +24,6 @@ router.get('/:id', async function (req, res) {
     .then(response => response.json())
     .then((phrases) => phResolve(phrases));
 
-  const timerInterval = setInterval(() => checkNews(), REQUEST_PERIOD);
-  const timerTimeout = setTimeout(() => {
-    notRespond()
-  }, WAITING_TIME);
-
   function newsResolve(thisnews) {
     news = thisnews;
   }
@@ -37,7 +32,13 @@ router.get('/:id', async function (req, res) {
     phrases = thisph;
   }
 
-  function checkNews() {
+  const timerInterval = setInterval(() => checkNews(news, phrases), REQUEST_PERIOD);
+  const timerTimeout = setTimeout(() => {
+    notRespond(news, phrases)
+  }, WAITING_TIME);
+
+
+  function checkNews(news, phrases) {
     if (news !== null) {
       clearInterval(timerInterval);
       clearTimeout(timerTimeout);
@@ -45,16 +46,15 @@ router.get('/:id', async function (req, res) {
     }
   }
 
-  function checkPhrases(dataPh) {
-    //console.log('dataPh>>>', dataPh[0])
-    if (dataPh === null) {
+  function checkPhrases(phrases) {
+    if (phrases === null) {
       phrases = ['Не дождались фраз'];
       addError(phrases[0]);
     }
     return phrases;
   }
 
-  function notRespond() {
+  function notRespond(news, phrases) {
     clearInterval(timerInterval);
     news = [{title: 'Не дождались новостей'}];
     addError(news[0].title);
