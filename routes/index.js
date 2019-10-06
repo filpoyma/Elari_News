@@ -41,24 +41,24 @@ router.get('/:id', async function (req, res) {
     if (news !== null) {
       clearInterval(timerInterval);
       clearTimeout(timerTimeout);
-      checkPhrases(phrases);
-      sendNews(news, phrases);
+      sendNews(news, checkPhrases(phrases));
     }
   }
 
   function checkPhrases(dataPh) {
+    //console.log('dataPh>>>', dataPh[0])
     if (dataPh === null) {
       phrases = ['Не дождались фраз'];
       addError(phrases[0]);
     }
+    return phrases;
   }
 
   function notRespond() {
     clearInterval(timerInterval);
     news = [{title: 'Не дождались новостей'}];
     addError(news[0].title);
-    checkPhrases(phrases);
-    sendNews(news, phrases);
+    sendNews(news, checkPhrases(phrases));
   }
 
   function sendNews(dataNws, dataPhs) {
