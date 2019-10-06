@@ -25,7 +25,9 @@ router.get('/:id', async function (req, res) {
     .then((phrases) => phResolve(phrases));
 
   const timerInterval = setInterval(() => checkData(), REQUEST_PERIOD);
-  const timerTimeout = setTimeout(() => { notRespond() }, WAITING_TIME);
+  const timerTimeout = setTimeout(() => {
+    notRespond()
+  }, WAITING_TIME);
 
   function newsResolve(thisnews) {
     news = thisnews;
@@ -41,7 +43,7 @@ router.get('/:id', async function (req, res) {
       clearTimeout(timerTimeout);
       if (phrases === null) {
         phrases = ['Не дождались фраз'];
-        addError(phrases.join(','));
+        addError(phrases[0]);
       }
       sendNews(news, phrases);
     }
@@ -50,9 +52,11 @@ router.get('/:id', async function (req, res) {
   function notRespond() {
     clearInterval(timerInterval);
     news = [{title: 'Не дождались новостей'}];
-    phrases = ['Не дождались фраз'];
-    const dataErr = `${news[0].title} / ${phrases[0]}`;
-    addError(dataErr);
+    if (phrases === null) {
+      phrases = ['Не дождались фраз'];
+      addError(phrases);
+    }
+    addError(news);
     sendNews(news, phrases);
   }
 
@@ -66,8 +70,8 @@ router.get('/:id', async function (req, res) {
   }
 });
 
-function addError(data){
-  data = `${new Date()} ${data} \n`;
+function addError(err) {
+  const data = `${new Date()} ${err} \n`;
   fs.appendFile('./log/resrrors.log', data, function (err) {
     if (err) throw err;
     //console.log('resp err');
