@@ -7,7 +7,12 @@ const REQUEST_PERIOD = 100; //ms
 const WAITING_TIME = 6000; //ms
 const API_PREFIX = 'http://slowpoke.desigens.com';
 
+
 router.get('/', async function (req, res) {
+  res.render('index.hbs');
+});
+
+router.get('/:id', async function (req, res) {
 
   let news = null;
   let phrases = null;
