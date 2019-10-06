@@ -52,11 +52,11 @@ router.get('/:id', async function (req, res) {
   function notRespond() {
     clearInterval(timerInterval);
     news = [{title: 'Не дождались новостей'}];
+    addError(news[0].title);
     if (phrases === null) {
       phrases = ['Не дождались фраз'];
-      addError(phrases);
+      addError(phrases[0]);
     }
-    addError(news);
     sendNews(news, phrases);
   }
 
